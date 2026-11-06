@@ -5,10 +5,12 @@ from pathlib import Path
 from fastapi import FastAPI, File, HTTPException, UploadFile, status
 
 # Importamos los servicios nativos que construiste en el Paso 1
-from backend_service import AuthService, StorageService, SystemAuditService
+from backend_service import AuthService, StorageService
 
 # Importamos los esquemas de Pydantic
 from schemas import UserLogin, UserRegister, UserResponse
+
+from endpoints.system_audi import router as system_audit_router
 
 app = FastAPI(
     title="Bridge API - Servidor Backend",
@@ -27,10 +29,7 @@ storage_service = StorageService(BASE_DIR)
 # -------------------------------------------------------------
 # 1. ENDPOINTS DE AUDITORÍA Y SISTEMA
 # -------------------------------------------------------------
-@app.get("/api/v1/system/telemetry", tags=["Sistema"])
-def read_telemetry():
-    """Retorna la telemetría del sistema operativo y ejecuta diagnósticos con subprocess."""
-    return SystemAuditService.get_telemetry()
+app.include_router(system_audit_router, prefix="/api/v1", tags=["Sistema"])
 
 
 # -------------------------------------------------------------
