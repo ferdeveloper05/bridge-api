@@ -39,7 +39,7 @@ class AuthService:
         
         # Guardar credenciales 
         with open(self.db_file, 'a', encoding='utf-8') as file: 
-            file.write(f'{username}:{password_hash}')
+            file.write(f'{username}:{password_hash}' + "\n")
             
         print(f"✅ Usuario '{username}' registrado correctamente")
         return True
