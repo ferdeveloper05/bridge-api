@@ -45,17 +45,24 @@ class AuthService:
         return True
     
     def login_user(self, username: str, password: str): 
-        """ Login que permite el acceso la sistema """
+        """ Valida las credenciales del usuario y permite el acceso la sistema """
+        
+        if not self.db_file.exists():
+            return False
+    
         hash_password = self._hash_password(password=password)
         
         if self.db_file.exists():
             
             for line in self.db_file.read_text('utf-8').splitlines(): 
-                if line: 
-                    user, passw = line.split(":")
+                if line.strip(): 
+                    user_in_db, hash_in_db = line.split(":")
             
-        if hash_password == passw and user == username: 
-            return True
+                    # Comparar usuario y hash
+                    if user_in_db == username and hash_in_db == hash_password:
+                        return True # Credenciales válidas
+                    
+        return False
             
     
 # ====================================
