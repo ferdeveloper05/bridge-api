@@ -44,6 +44,20 @@ class AuthService:
         print(f"✅ Usuario '{username}' registrado correctamente")
         return True
     
+    def login_user(self, username: str, password: str): 
+        """ Login que permite el acceso la sistema """
+        hash_password = self._hash_password(password=password)
+        
+        if self.db_file.exists():
+            
+            for line in self.db_file.read_text('utf-8').splitlines(): 
+                if line: 
+                    user, passw = line.split(":")
+            
+        if hash_password == passw and user == username: 
+            return True
+            
+    
 # ====================================
 # 2. Servicio de Almacenamiento (pathlib + hashlib + shutil)
 # ====================================
